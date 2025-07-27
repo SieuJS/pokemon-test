@@ -61,3 +61,5 @@ pgadmin_data/
 *.dump
 
 /generated/prisma
+
+.vscode

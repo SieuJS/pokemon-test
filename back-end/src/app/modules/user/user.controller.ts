@@ -7,7 +7,7 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { UserService } from './user.service';
 
 interface CreateUserDto {
