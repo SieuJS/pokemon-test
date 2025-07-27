@@ -13,15 +13,12 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException('Bearer token is required');
     }
 
-    // TODO: Implement proper JWT token validation
     const token = authHeader.substring(7);
     
     if (!token) {
       throw new UnauthorizedException('Invalid token');
     }
 
-    // For now, just check if token exists
-    // TODO: Validate JWT token properly
     return true;
   }
 }

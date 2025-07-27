@@ -16,9 +16,6 @@ import { ItemCardComponent } from '../components/item-card.component';
   selector: 'app-home',
   imports: [CommonModule, CarouselCardComponent, Header, ItemCardComponent],
   template: `
-    <div class="px-auto">
-      <app-header></app-header>
-    </div>
     <section class="bg-blue-100 py-12">
       <div class="container mx-auto text-center">
         <h2 class="text-4xl font-bold mb-4">Welcome to the Pokedex!</h2>

@@ -1,5 +1,5 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
+import { appConfigWithInterceptor } from './app/app.config.interceptor';
 import { App } from './app/app';
 
-bootstrapApplication(App, appConfig).catch((err) => console.error(err));
+bootstrapApplication(App, appConfigWithInterceptor).catch((err) => console.error(err));

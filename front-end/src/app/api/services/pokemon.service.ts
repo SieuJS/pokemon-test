@@ -11,10 +11,13 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { pokemonControllerGetPokemonDetails } from '../fn/pokemon/pokemon-controller-get-pokemon-details';
+import { PokemonControllerGetPokemonDetails$Params } from '../fn/pokemon/pokemon-controller-get-pokemon-details';
 import { pokemonControllerGetPokemonList } from '../fn/pokemon/pokemon-controller-get-pokemon-list';
 import { PokemonControllerGetPokemonList$Params } from '../fn/pokemon/pokemon-controller-get-pokemon-list';
 import { pokemonControllerImportPokemonCsv } from '../fn/pokemon/pokemon-controller-import-pokemon-csv';
 import { PokemonControllerImportPokemonCsv$Params } from '../fn/pokemon/pokemon-controller-import-pokemon-csv';
+import { PokemonDto } from '../models/pokemon-dto';
 import { PokemonListDto } from '../models/pokemon-list-dto';
 
 @Injectable({ providedIn: 'root' })
@@ -70,6 +73,31 @@ export class PokemonService extends BaseService {
   pokemonControllerImportPokemonCsv(params: PokemonControllerImportPokemonCsv$Params, context?: HttpContext): Observable<void> {
     return this.pokemonControllerImportPokemonCsv$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `pokemonControllerGetPokemonDetails()` */
+  static readonly PokemonControllerGetPokemonDetailsPath = '/api/pokemon/details/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `pokemonControllerGetPokemonDetails()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  pokemonControllerGetPokemonDetails$Response(params: PokemonControllerGetPokemonDetails$Params, context?: HttpContext): Observable<StrictHttpResponse<PokemonDto>> {
+    return pokemonControllerGetPokemonDetails(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `pokemonControllerGetPokemonDetails$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  pokemonControllerGetPokemonDetails(params: PokemonControllerGetPokemonDetails$Params, context?: HttpContext): Observable<PokemonDto> {
+    return this.pokemonControllerGetPokemonDetails$Response(params, context).pipe(
+      map((r: StrictHttpResponse<PokemonDto>): PokemonDto => r.body)
     );
   }
 

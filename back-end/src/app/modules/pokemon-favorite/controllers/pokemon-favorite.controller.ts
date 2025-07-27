@@ -3,17 +3,15 @@ import {
   Post,
   Delete,
   Get,
-  Body,
   Param,
   Req,
   UseGuards,
   BadRequestException,
-  Patch,
 } from '@nestjs/common';
 import { PokemonFavoriteService } from '../services/pokemon-favorite.service';
-import { AddPokemonFavoriteDTO } from '../models';
+import { AddPokemonFavoriteDTO, PokemonFavoriteDTO } from '../models';
 import { AuthGuard } from '../../auth/guards/auth.guard';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse } from '@nestjs/swagger';
 
 @Controller('pokemon-favorite')
 @UseGuards(AuthGuard)
@@ -35,6 +33,7 @@ export class PokemonFavoriteController {
     status: 400,
     description: 'Pokemon is already in favorites',
   })
+  @ApiBearerAuth('access-token')
   async addFavorite(@Req() req, @Param() pokemonId: string) {
     const userId = req.user.id;
     const favorites = await this.favoriteService.getFavoritesByUser(userId);
@@ -58,6 +57,7 @@ export class PokemonFavoriteController {
     status: 400,
     description: 'Pokemon is not in favorites',
   })
+  @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard)
   async removeFavorite(@Req() req, @Param('pokemonId') pokemonId: string) {
     const userId = req.user.id;
@@ -70,7 +70,15 @@ export class PokemonFavoriteController {
   }
 
   @Get()
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the list of favorite Pokemon for the user',
+    type: [PokemonFavoriteDTO],
+  })
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth('access-token')
   async getFavorites(@Req() req) {
+console.log('[PokemonFavoriteController] Fetching favorites for user:', req.user.id);
     return this.favoriteService.getFavoritesByUser(req.user.id);
   }
 }

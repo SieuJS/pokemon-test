@@ -7,7 +7,7 @@ export class PokemonFilterPipe implements PipeTransform {
   transform(value: PokemonFilterDTO, ): PokemonFilterDTO {
     const filter: any = { ...value };
 
-    ['page', 'limit', 'speed'].forEach((key) => {
+    ['page', 'limit', 'fromSpeed', 'toSpeed'].forEach((key) => {
       if (filter[key] !== undefined) {
         const num = Number(filter[key]);
         if (!isNaN(num)) filter[key] = num;

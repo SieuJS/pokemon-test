@@ -1,17 +1,18 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { Header } from "./components/header.component";
 
 @Component({
-  imports: [RouterModule],
+  imports: [RouterModule, Header],
   selector: 'app-root',
   template: `
+   <app-header/>
+   <main class="container mx-auto mt-8 px-4">
     <router-outlet></router-outlet>
+  </main>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
-    :host {
-      @apply block size-full container mx-auto px-4;
-    }
   `,
 })
 export class App {

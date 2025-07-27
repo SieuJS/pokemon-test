@@ -1,19 +1,22 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { TwMergePipe } from '../pipes/tw-merge.pipe';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [TwMergePipe],
+  imports: [TwMergePipe, RouterLink],
   template: `
     <header class="bg-blue-600 text-white p-4">
-      <div class="container mx-auto flex justify-between items-center">
+      <div class="container mx-auto px-4 flex justify-between items-center">
         <a href="index.html" class="text-2xl font-bold">Pokedex</a>
         <nav class="hidden md:flex space-x-6">
-          <a href="index.html" class="hover:text-blue-200">Home</a>
-          <a href="pokemon-list.html" class="hover:text-blue-200"
-            >Pokémon List</a
+          @for (item of urls; track $index) {
+          <a
+            [routerLink]="item.url"
+            class="hover:text-blue-200 transition-colors"
+            >{{ item.name }}</a
           >
-          <a href="#" class="hover:text-blue-200">Favorites</a>
+          }
         </nav>
         <button class="md:hidden" aria-label="Open menu" (click)="toggleMenu()">
           <span class="block w-6 h-1 bg-white mb-1 rounded"></span>
@@ -24,21 +27,13 @@ import { TwMergePipe } from '../pipes/tw-merge.pipe';
 
       <div [class]=" ['bg-blue-700', !openMenu() && 'hidden'] | twMerge ">
         <div class="px-4 py-2 space-y-1">
+          @for (item of urls; track $index) {
           <a
-            href="index.html"
+            [routerLink]="item.url"
             class="block py-3 px-2 hover:text-blue-200 hover:bg-blue-600 rounded transition-colors"
-            >Home</a
+            >{{ item.name }}</a
           >
-          <a
-            href="pokemon-list.html"
-            class="block py-3 px-2 hover:text-blue-200 hover:bg-blue-600 rounded transition-colors"
-            >Pokémon List</a
-          >
-          <a
-            href="#"
-            class="block py-3 px-2 hover:text-blue-200 hover:bg-blue-600 rounded transition-colors"
-            >Favorites</a
-          >
+          }
         </div>
       </div>
     </header>
@@ -51,4 +46,9 @@ export class Header {
   toggleMenu() {
     this.openMenu.set(!this.openMenu())
   }
+
+  readonly urls = [
+    { name: 'Home', url: '' },
+    { name: 'Pokémon List', url: 'pokemon-list' },
+  ]
 }

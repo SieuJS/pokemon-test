@@ -4,7 +4,6 @@ import { PokemonDTO } from './pokemon.dto';
 export class PokemonFilterDTO extends PickType(PokemonDTO, [
   'name',
   'legendary',
-  'speed',
 ]) {
   @ApiProperty({
     description: 'Current page number',
@@ -16,4 +15,25 @@ export class PokemonFilterDTO extends PickType(PokemonDTO, [
     example: 10,
   })
   limit?: number;
+
+  @ApiProperty({
+    description: 'Filter by primary type',
+    example: 'Grass',
+    required: false,
+  })
+  fromSpeed?: number;
+
+  @ApiProperty({
+    description: 'Filter by secondary type',
+    example: 'Poison',
+    required: false,
+  })
+  toSpeed?: number;
+
+  @ApiProperty({
+    description: 'Filter by Pokémon type',
+    example: 'Fire',
+    required: false,
+  })
+  type: string;
 }

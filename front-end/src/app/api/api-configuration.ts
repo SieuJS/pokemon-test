@@ -11,7 +11,7 @@ import { environment } from 'front-end/src/environments/environment';
   providedIn: 'root',
 })
 export class ApiConfiguration {
-  rootUrl: string = environment.apiBaseUrl || '';
+  rootUrl: string = environment.apiBaseUrl || 'http://localhost:3000';
 }
 
 /**

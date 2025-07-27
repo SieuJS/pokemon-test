@@ -18,11 +18,6 @@ export interface PokemonControllerGetPokemonList$Params {
   name?: string;
 
 /**
- * Speed stat
- */
-  speed?: number;
-
-/**
  * Is this Pokémon legendary?
  */
   legendary?: boolean;
@@ -36,16 +31,33 @@ export interface PokemonControllerGetPokemonList$Params {
  * Number of items per page
  */
   limit?: number;
+
+/**
+ * Filter by primary type
+ */
+  fromSpeed?: number;
+
+/**
+ * Filter by secondary type
+ */
+  toSpeed?: number;
+
+/**
+ * Filter by Pokémon type
+ */
+  type?: string;
 }
 
 export function pokemonControllerGetPokemonList(http: HttpClient, rootUrl: string, params?: PokemonControllerGetPokemonList$Params, context?: HttpContext): Observable<StrictHttpResponse<PokemonListDto>> {
   const rb = new RequestBuilder(rootUrl, pokemonControllerGetPokemonList.PATH, 'get');
   if (params) {
     rb.query('name', params.name, {});
-    rb.query('speed', params.speed, {});
     rb.query('legendary', params.legendary, {});
     rb.query('page', params.page, {});
     rb.query('limit', params.limit, {});
+    rb.query('fromSpeed', params.fromSpeed, {});
+    rb.query('toSpeed', params.toSpeed, {});
+    rb.query('type', params.type, {});
   }
 
   return http.request(

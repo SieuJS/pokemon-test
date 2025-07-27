@@ -27,7 +27,7 @@ export class PokemonFavoriteService {
     });
   }
 
-  async getFavoritesByUser(userId: string) {
+  async getFavoritesByUser(userId: string) : Promise<PokemonFavoriteDTO[]> {
     return this.prismaService.pokemonFavorite.findMany({
       where: { userId },
       include: { pokemon: true },

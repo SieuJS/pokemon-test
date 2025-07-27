@@ -17,6 +17,7 @@ import { pokemonFavoriteControllerGetFavorites } from '../fn/pokemon-favorite/po
 import { PokemonFavoriteControllerGetFavorites$Params } from '../fn/pokemon-favorite/pokemon-favorite-controller-get-favorites';
 import { pokemonFavoriteControllerRemoveFavorite } from '../fn/pokemon-favorite/pokemon-favorite-controller-remove-favorite';
 import { PokemonFavoriteControllerRemoveFavorite$Params } from '../fn/pokemon-favorite/pokemon-favorite-controller-remove-favorite';
+import { PokemonFavoriteDto } from '../models/pokemon-favorite-dto';
 
 @Injectable({ providedIn: 'root' })
 export class PokemonFavoriteService extends BaseService {
@@ -83,7 +84,7 @@ export class PokemonFavoriteService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  pokemonFavoriteControllerGetFavorites$Response(params?: PokemonFavoriteControllerGetFavorites$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  pokemonFavoriteControllerGetFavorites$Response(params?: PokemonFavoriteControllerGetFavorites$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PokemonFavoriteDto>>> {
     return pokemonFavoriteControllerGetFavorites(this.http, this.rootUrl, params, context);
   }
 
@@ -93,9 +94,9 @@ export class PokemonFavoriteService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  pokemonFavoriteControllerGetFavorites(params?: PokemonFavoriteControllerGetFavorites$Params, context?: HttpContext): Observable<void> {
+  pokemonFavoriteControllerGetFavorites(params?: PokemonFavoriteControllerGetFavorites$Params, context?: HttpContext): Observable<Array<PokemonFavoriteDto>> {
     return this.pokemonFavoriteControllerGetFavorites$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+      map((r: StrictHttpResponse<Array<PokemonFavoriteDto>>): Array<PokemonFavoriteDto> => r.body)
     );
   }
 

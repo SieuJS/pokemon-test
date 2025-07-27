@@ -8,14 +8,16 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { PokemonFavoriteDto } from '../../models/pokemon-favorite-dto';
+import { PokemonDto } from '../../models/pokemon-dto';
 
-export interface PokemonFavoriteControllerGetFavorites$Params {
+export interface PokemonControllerGetPokemonDetails$Params {
+  id: string;
 }
 
-export function pokemonFavoriteControllerGetFavorites(http: HttpClient, rootUrl: string, params?: PokemonFavoriteControllerGetFavorites$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PokemonFavoriteDto>>> {
-  const rb = new RequestBuilder(rootUrl, pokemonFavoriteControllerGetFavorites.PATH, 'get');
+export function pokemonControllerGetPokemonDetails(http: HttpClient, rootUrl: string, params: PokemonControllerGetPokemonDetails$Params, context?: HttpContext): Observable<StrictHttpResponse<PokemonDto>> {
+  const rb = new RequestBuilder(rootUrl, pokemonControllerGetPokemonDetails.PATH, 'get');
   if (params) {
+    rb.path('id', params.id, {});
   }
 
   return http.request(
@@ -23,9 +25,9 @@ export function pokemonFavoriteControllerGetFavorites(http: HttpClient, rootUrl:
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Array<PokemonFavoriteDto>>;
+      return r as StrictHttpResponse<PokemonDto>;
     })
   );
 }
 
-pokemonFavoriteControllerGetFavorites.PATH = '/api/pokemon-favorite';
+pokemonControllerGetPokemonDetails.PATH = '/api/pokemon/details/{id}';

@@ -1,6 +1,6 @@
 import { Injectable, Param } from '@nestjs/common';
 import { PrismaService } from '../../common';
-import { PokemonFilterDTO, PokemonListDTO } from '../models';
+import { PokemonDTO, PokemonFilterDTO, PokemonListDTO } from '../models';
 import { Prisma } from '@prisma/client';
 import { PokemonImportDTO } from '../models/pokemon-import.dto';
 import { File as MulterFile } from 'multer';
@@ -23,8 +23,21 @@ export class PokemonService {
     if (filter.legendary !== undefined) {
       where.legendary = filter.legendary;
     }
-    if (filter.speed !== undefined) {
-      where.speed = filter.speed;
+    if (filter.fromSpeed !== undefined) {
+      where.speed = { gte: filter.fromSpeed };
+    }
+    if (filter.toSpeed !== undefined) {
+      where.speed = { lte: filter.toSpeed };
+    }
+    if (filter.type) {
+      where.type1 = {
+        equals: filter.type,
+        mode: 'insensitive',
+      }
+      where.type2 = {
+        equals: filter.type,
+        mode: 'insensitive',
+      };
     }
 
     const [items, total] = await Promise.all([
@@ -53,6 +66,12 @@ export class PokemonService {
         next: skip + limit < total ? page + 1 : undefined,
       },
     };
+  }
+
+  async getPokemonDetails(id: string): Promise<PokemonDTO | null> {
+    return this.prismaService.pokemon.findUnique({
+      where: { id },
+    });
   }
 
   async importPokemonData(data: PokemonImportDTO[]): Promise<void> {
