@@ -5,5 +5,7 @@
 export type { AccessTokenDto } from './models/access-token-dto';
 export type { AddPokemonFavoriteDto } from './models/add-pokemon-favorite-dto';
 export type { LoginDto } from './models/login-dto';
+export type { PaginationDto } from './models/pagination-dto';
 export type { PokemonListDto } from './models/pokemon-list-dto';
+export type { PokemonListItemDto } from './models/pokemon-list-item-dto';
 export type { RegisterDto } from './models/register-dto';
