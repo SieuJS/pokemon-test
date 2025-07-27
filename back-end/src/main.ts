@@ -25,11 +25,18 @@ async function bootstrap() {
     )
     .build();
 
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document, {
     swaggerOptions: {
       persistAuthorization: true,
     },
+  });
+
+  const httpAdapter = app.getHttpAdapter().getInstance();
+  httpAdapter.get('/api/openapi.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(document);
   });
 
   const port = process.env.PORT || 3000;

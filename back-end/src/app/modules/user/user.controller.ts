@@ -46,7 +46,7 @@ export class UserController {
 
   @Post()
   @UseGuards(AuthGuard)
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({ status: 201, description: 'User created successfully' })
   @ApiBody({
@@ -67,7 +67,7 @@ export class UserController {
 
   @Put(':id')
   @UseGuards(AuthGuard)
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Update user' })
   @ApiParam({ name: 'id', description: 'User ID', type: 'string' })
   @ApiResponse({ status: 200, description: 'User updated successfully' })
@@ -79,7 +79,7 @@ export class UserController {
 
   @Delete(':id')
   @UseGuards(AuthGuard)
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Delete user' })
   @ApiParam({ name: 'id', description: 'User ID', type: 'string' })
   @ApiResponse({ status: 200, description: 'User deleted successfully' })

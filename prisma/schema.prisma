@@ -11,6 +11,8 @@ model User {
   id        String   @id @default(uuid()) @db.Uuid
   username  String   @unique
   password  String
+
+  PokemonFavorite PokemonFavorite[]
 }
 
 model Pokemon {
@@ -29,4 +31,17 @@ model Pokemon {
   legendary   Boolean
   image       String
   ytbUrl      String
+
+  PokemonFavorite PokemonFavorite[]
+}
+
+model PokemonFavorite {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  pokemonId String   @db.Uuid
+
+  user      User     @relation(fields: [userId], references: [id])
+  pokemon   Pokemon  @relation(fields: [pokemonId], references: [id])
+
+  @@unique([userId, pokemonId])
 }

@@ -5,6 +5,8 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PokemonModule } from './modules/pokemon/pokemon.module';
+import { PokemonFavoriteModule } from './modules/pokemon-favorite/pokemon-favorite.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { AppService } from './app.service';
     CommonModule,
     UserModule,
     AuthModule,
+    PokemonModule,
+    PokemonFavoriteModule
   ],
   controllers: [AppController],
   providers: [AppService],

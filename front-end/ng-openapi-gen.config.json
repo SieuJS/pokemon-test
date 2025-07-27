@@ -1,0 +1,5 @@
+{
+  "input": "front-end/ng-openapi-gen.json",
+  "output": "front-end/src/app/api",
+  "ignoreUnusedModels": true
+}

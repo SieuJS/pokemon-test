@@ -34,7 +34,7 @@ export class AppController {
 
   @Get('protected')
   @UseGuards(AuthGuard)
-  @ApiBearerAuth('JWT-auth') // This name must match the one in main.ts
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Protected endpoint requiring Bearer token' })
   @ApiResponse({ 
     status: 200, 
