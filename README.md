@@ -80,6 +80,39 @@ Nx Console is an editor extension that enriches your developer experience. It le
 
 [Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
+
+## Getting Started: Full Stack Workflow
+
+Follow these steps to run the full stack application:
+
+1. **Start PostgreSQL with Docker Compose:**
+   ```sh
+   docker compose up -d
+   ```
+
+2. **Push Prisma schema to the database:**
+   ```sh
+   npx prisma db push
+   ```
+
+3. **Start the backend using Nx:**
+   ```sh
+   npx nx run back-end:serve
+   ```
+
+4. **Generate/update the front-end using OpenAI (optional):**
+   Use your preferred OpenAI tool or prompt to generate/update front-end code as needed.
+
+5. **Update API service configuration in the front-end:**
+   - Change the API base URL or environment variables in your front-end config to match your backend (see `front-end/src/environments/` and `front-end/src/app/api/api-configuration.ts`).
+
+6. **Start the front-end using Nx:**
+   ```sh
+   npx nx run front-end:serve
+   ```
+
+---
+
 ## Useful links
 
 Learn more:
