@@ -76,12 +76,19 @@ import { Router } from '@angular/router';
                       </div>
                 </form>
                 <div class="mt-6 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-                    <button class="flex-1 sm:flex-none bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors touch-manipulation">
-                        Apply Filters
-                    </button>
-                    <button (click)="clearFilters()" class="flex-1 sm:flex-none bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors touch-manipulation">
-                        Clear Filters
-                    </button>
+                  <input type="file" (change)="onFileChange($event)" id="import-file">
+                  <ng-container *ngIf="isImporting">
+                    <div class="flex items-center space-x-2">
+                      <span class="text-blue-600 font-medium">Importing...</span>
+                      <svg class="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                      </svg>
+                    </div>
+                  </ng-container>
+                  <button (click)="clearFilters()" class="flex-1 sm:flex-none bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors touch-manipulation">
+                      Clear Filters
+                  </button>
                 </div>
             </div>
         </section>
@@ -142,6 +149,7 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PokemonListPage {
+  isImporting = false;
   private dialog = inject(MatDialog);
   readonly clickDetail = new Subject<string>();
   readonly pokemonService = inject(PokemonService);
@@ -202,6 +210,11 @@ export class PokemonListPage {
   toggleAdvancedFilters() {
     this.openFilter.set(!this.openFilter());
   }
+
+  importFile = this.fb.group({
+    file: [null],
+  });
+
   searchForm = this.fb.group({
     name: [''],
   });
@@ -216,10 +229,13 @@ export class PokemonListPage {
     page: [1],
     limit: [20],
   });
+  private reloadList$ = new Subject<void>();
+
   filterPokemonList$ = merge(
     this.searchForm.valueChanges.pipe(startWith(this.searchForm.value)),
     this.filterForm.valueChanges.pipe(startWith(this.filterForm.value)),
     this.paginationForm.valueChanges.pipe(startWith(this.paginationForm.value)),
+    this.reloadList$
   ).pipe(
     debounceTime(300),
     map(() => ({
@@ -252,5 +268,25 @@ export class PokemonListPage {
 
   clearFilters() {
     this.filterForm.reset();
+  }
+
+  onFileChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input?.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.isImporting = true;
+      this.pokemonService.pokemonControllerImportPokemonCsv({
+        body: { file }
+      }).subscribe({
+        next: () => {
+          this.reloadList$.next();
+          this.isImporting = false;
+        },
+        error: (err) => {
+          this.isImporting = false;
+          console.error('Error importing file:', err);
+        },
+      });
+    }
   }
 }
